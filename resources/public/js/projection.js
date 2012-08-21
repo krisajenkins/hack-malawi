@@ -32,8 +32,8 @@ $(document).ready(function() {
 
 	var svg = d3.select("body")
 		.insert("svg:svg", "h2")
-		.attr("width", 1200)
-		.attr("height", 800);
+		.attr("width", 1000)
+		.attr("height", 600);
 
 	var mapGroup = svg.append("svg:g")
 		.attr("id", "map");
@@ -89,30 +89,36 @@ $(document).ready(function() {
 
 			// Add the dots.
 			var dots = dotGroup.selectAll("circle")
-				.data(filtered_projects);
+				.data(filtered_projects, function(data) { return data.id; });
 
 			dots.enter().append("svg:circle")
-				.attr("r",        function(data) { return data.precision * 5.; })
-				.attr("opacity",  function(data) { return 1.0 / data.precision; })
-				.attr("cx",       function(data) { return data.projected_longitude; })
+				.attr("category", function(data) { return data.category; })
+				.attr("opacity",  0.0 )
+				.attr("r",        0.0 )
+				.attr("cx",       -1000 )
 				.attr("cy",       function(data) { return data.projected_latitude; })
-				.attr("category", function(data) { return data.category; });
+				.transition()
+					.attr("opacity",  function(data) { return 1.0 / data.precision; })
+					.attr("cx",       function(data) { return data.projected_longitude; })
+					.attr("r",        function(data) { return data.precision * 5.; })
+				;
 
-			dots.exit().remove();
+			dots.on("mouseover", function(data) {
+					var detail = d3.selectAll("#details").selectAll("div")
+						.data([data], function(data) { return data.id; } );
 
-			/* Compute the Voronoi diagram of the projected positions.
-			var polygons = d3.geom.voronoi( projects );
+					detail.enter().append("div")
+						.text( function(data) { return data.id; } );
 
-			var voronoi = svg.append("svg:g")
-				.attr("id", "voronoi" )
-				.selectAll("path")
-				.data( polygons );
+					detail.exit().remove();
+				})
 
-			voronoi.enter().append("svg:path")
-				.attr("d", polygon_to_path_data );
-
-			voronoi.exit().remove();
-			*/
+			dots.exit()
+				.transition()
+				.attr("opacity", 0.0 )
+				.attr("cx", 1000.0 )
+				.attr("r", 0.0 )
+				.remove();
 		};
 
 		var lookup_category = make_lookup_key( 'category' );
