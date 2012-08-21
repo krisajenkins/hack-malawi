@@ -53,21 +53,6 @@ $(document).ready(function() {
 		mapPaths.exit().remove();
 	});
 
-	function polygon_to_path_data( data ) {
-		var first = data.shift();
-		var rest = data;
-
-		var pair_to_string = function( pair, prefix ) {
-			if ( typeof( prefix ) !== 'string' ) prefix = "L";
-
-			return prefix + " " + pair.projected_longitude + " " + pair.projected_latitude + " ";
-		}
-
-		return pair_to_string( first, "M" )
-			+ rest.map( pair_to_string )
-		   ;
-	};
-
 	var dotGroup = svg.append("svg:g")
 		.attr("id", "dots");
 
@@ -84,7 +69,6 @@ $(document).ready(function() {
 
 		var show_category = function( category ) {
 			var filtered_projects = projects.filter(function(project) { return project.category == category; } );
-			console.log( "Filtered", filtered_projects );
 
 			// Add the dots.
 			var dots = dotGroup.selectAll("circle")
