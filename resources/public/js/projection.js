@@ -1,16 +1,15 @@
-function sort_unique(arr) {
-	var sorted, uniq;
+Array.prototype.sort_unique = function() {
+	var sorted = this.sort();
+	var unique;
 
-	sorted = arr.sort();
-
-	uniq = [sorted[0]];
+	unique = [sorted[0]];
 	for (var i = 1; i < sorted.length; i++) { // start loop at 1 as element 0 can never be a duplicate
 		if (sorted[i-1] !== sorted[i]) {
-			uniq.push(sorted[i]);
+			unique.push(sorted[i]);
 		}
 	}
 
-	return uniq;
+	return unique;
 }
 
 function make_lookup_function( key ) {
@@ -23,12 +22,24 @@ function identity(arg) {
 	return arg;
 }
 
-$(document).ready(function() {
-	var projection = d3.geo.azimuthal()
-		.mode("equidistant")
-		.origin([38.2, -12.5])
-		.scale(4000);
+function project_object(object) {
+	var projected_point = projection( [object.longitude, object.latitude] );
 
+	object.projected_longitude = projected_point[0];
+	object.projected_latitude  = projected_point[1];
+
+	return object;
+};
+
+var projection = d3.geo.azimuthal()
+	.mode("equidistant")
+	.origin([38.2, -12.5])
+	.scale(4000);
+
+var data_to_path = d3.geo.path()
+	.projection(projection);
+
+$(document).ready(function() {
 	var svg = d3.select("#data")
 		.insert("svg:svg","#filters")
 		.attr("width", 400)
@@ -37,59 +48,65 @@ $(document).ready(function() {
 	var mapGroup = svg.append("svg:g")
 		.attr("id", "map");
 
-	d3.json("/json/malawi.geojson", function(collection) {
-		var path = d3.geo.path()
-			.projection(projection);
+	var dotGroup = svg.append("svg:g")
+		.attr("id", "dots");
 
+	d3.json("/json/malawi.geojson", function(collection) {
 		var mapPaths = mapGroup.selectAll("path")
 			.data([collection]);
 
 		mapPaths.enter()
 			.append("svg:path")
-			.attr("d", function(data) {
-				return path( data );
-			});
+			.attr("d", function(data) { return data_to_path( data ); });
 
 		mapPaths.exit().remove();
 	});
 
-	var dotGroup = svg.append("svg:g")
-		.attr("id", "dots");
-
 	d3.csv("Malawi_Digested.csv", function(projects) {
 		// Project the points for each project.
-		var projects = projects.map(function(project) {
-			var projected_point = projection( [project.longitude, project.latitude] );
+		var projects = projects.map(project_object);
 
-			project.projected_longitude = projected_point[0];
-			project.projected_latitude  = projected_point[1];
+		function generate_filters(filter_key) {
+			var group_names = projects.map(function(object) { return object[filter_key]; }).sort_unique();
 
-			return project;
-		});
+			// Add the filter list of groups.
+			var filterDivs = d3.select("#filters").selectAll("div")
+				.data(group_names, identity);
 
-		var group_key = 'donor';
-		var lookup_group = make_lookup_function( group_key );
-		var groups = sort_unique( projects.map( lookup_group ) );
+			filterDivs.enter().append("div")
+				.attr("class", "filter")
+				.text(identity);
 
-		var show_group = function( lookup_function, lookup_value ) {
-			var filtered_projects = projects.filter(function(project) { return lookup_function(project) == lookup_value; } );
+			filterDivs.exit().remove();
 
+			filterDivs.on("click", function(group_name) {
+				// Mark me as selected.
+				$(".filter").removeClass("selected");
+				$(this).addClass("selected");
+
+				// Replot the relevant projects.
+				var filtered_projects = projects.filter(function(object) { return object[filter_key] == group_name; } );
+				plot_projects(filtered_projects);
+			});
+		};
+
+		generate_filters('amp_sector');
+
+		var plot_projects = function(projects_to_plot) {
 			// Add the dots.
 			var dots = dotGroup.selectAll("circle")
-				.data(filtered_projects, function(data) { return data.id; });
+				.data(projects_to_plot, function(project) { return project.id; });
 
 			dots.enter().append("svg:circle")
-				.attr("group", lookup_function)
-				.attr("opacity",  0.0 )
-				.attr("r",        0.0 )
-				.attr("cx",       -1000 )
-				.attr("cy",       function(data) { return data.projected_latitude; })
+				.attr("opacity",  0.0)
+				.attr("r",        0.0)
+				.attr("cx",       -1000)
+				.attr("cy",       function(project) { return project.projected_latitude; })
 				.transition()
 					.duration( 250 )
-					.attr("opacity",  function(data) { return 1.0 / data.precision; })
-					.attr("cx",       function(data) { return data.projected_longitude; })
-					.attr("r",        function(data) { return data.precision * 5.; })
-				;
+					.attr("opacity",  function(project) { return 1.0 / project.precision; })
+					.attr("cx",       function(project) { return project.projected_longitude; })
+					.attr("r",        function(project) { return project.precision * 5.; })
 
 			dots.exit()
 				.transition()
@@ -97,31 +114,10 @@ $(document).ready(function() {
 					.attr("opacity", 0.0 )
 					.attr("cx", 1000.0 )
 					.attr("r", 0.0 )
-					.remove();
-
-			dots.on("mouseover", function(data) {
-				var details = d3.select("#details").selectAll("div")
-					.data([data], function(data) { return data.id });
-				details.enter().append("div")
-					.text(function(data) { return data.funding; });
-				details.exit().remove();
-			});
+				.remove();
 		};
 
-		// Add the checkbox list of groups.
-		var filterDivs = d3.select("#filters").selectAll("div")
-			.data( groups )
-			.enter()
-				.append("div")
-					.attr("class", "filter")
-					.text(identity)
-					.on("click", function(data) {
-						show_group( lookup_group, data );
-						$(".filter").removeClass("selected");
-						$(this).addClass("selected");
-					});
-
 		// For convenience, click one to kick us off.
-		$(".filter")[2].click();
+		$(".filter")[0].click();
 	});
 });
