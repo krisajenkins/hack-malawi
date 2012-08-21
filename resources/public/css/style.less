@@ -1,0 +1,23 @@
+@blue: #414fcc;
+@dark_blue: darken( @blue, 20% );
+
+#map path {
+	fill: #ccc;
+	stroke: #fff;
+}
+
+#voronoi path {
+	fill: none;
+	pointer-events: all;
+	stroke: @dark_blue;
+	stroke-width: 2;
+}
+
+circle {
+	fill: @blue
+}
+
+.filter {
+	float: right;
+	clear: both;
+}
