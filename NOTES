@@ -2,3 +2,25 @@ Startup Visual Repl
 
 	java -jar vrepl-1.1.1-standalone.jar --path src/ddc
 
+Patch Object List to D3 Table:
+
+	var detailTable = d3.select("#details").selectAll("table")
+		.data(filtered_projects, function(data) { return data.id; });
+	detailTable.exit().remove();
+
+	var detailRow = detailTable.enter().append("table")
+		.selectAll("tr")
+		.data(function(d) {
+			var a = [];
+			for ( var key in d ) {
+				a.push([key, d[key]]);
+			}
+			return a;
+		});
+
+	var detailCell = detailRow.enter().append("tr")
+		.selectAll("td")
+		.data(function(d) { return d; });
+
+	detailCell.enter().append("td")
+		.text(function(d) { return d; });

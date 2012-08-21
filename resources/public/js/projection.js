@@ -81,27 +81,19 @@ $(document).ready(function() {
 				.attr("cx",       -1000 )
 				.attr("cy",       function(data) { return data.projected_latitude; })
 				.transition()
+					.duration( 750 )
 					.attr("opacity",  function(data) { return 1.0 / data.precision; })
 					.attr("cx",       function(data) { return data.projected_longitude; })
 					.attr("r",        function(data) { return data.precision * 5.; })
 				;
 
-			dots.on("mouseover", function(data) {
-					var detail = d3.selectAll("#details").selectAll("div")
-						.data([data], function(data) { return data.id; } );
-
-					detail.enter().append("div")
-						.text( function(data) { return data.id; } );
-
-					detail.exit().remove();
-				})
-
 			dots.exit()
 				.transition()
-				.attr("opacity", 0.0 )
-				.attr("cx", 1000.0 )
-				.attr("r", 0.0 )
-				.remove();
+					.duration( 750 )
+					.attr("opacity", 0.0 )
+					.attr("cx", 1000.0 )
+					.attr("r", 0.0 )
+					.remove();
 		};
 
 		var lookup_category = make_lookup_key( 'category' );
@@ -114,15 +106,11 @@ $(document).ready(function() {
 			.enter()
 				.append("div")
 					.attr("class", "filter")
-				.insert("div", ".filter")
 					.text(identity)
-				.append("input")
-					.attr("type", "radio")
-					.attr("name", "category")
-					.attr("value", lookup_category)
-					.attr("value", identity)
 					.on("click", function(data) {
-						show_category( this.value );
+						show_category( data );
+						$(".filter").removeClass("selected");
+						$(this).addClass("selected");
 					});
 	});
 });

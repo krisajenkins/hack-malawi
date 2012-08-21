@@ -21,8 +21,14 @@ circle {
 	float: left;
 	margin: 2em;
 	.filter {
-		float: right;
-		clear: both;
+		padding: 5px;
+		margin: 5px;
+		border: solid 2px black;
+
+		&.selected {
+			background-color: @blue;
+			color: white;
+		}
 	}
 }
 
@@ -36,7 +42,7 @@ h2 {
 	top: 10em;
 	right: 1em;
 
-	div {
+	table {
 		padding: 0.5em 1em;
 		border: solid grey 2px;
 	}
