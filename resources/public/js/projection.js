@@ -27,8 +27,8 @@ $(document).ready(function() {
 	var projection = d3.geo.azimuthal()
 		.mode("equidistant")
 		.origin([30, -15])
-		.scale(3000)
-		.translate([300, 300]);
+		.scale(4000)
+		.translate([300, 400]);
 
 	var svg = d3.select("body")
 		.insert("svg:svg", "h2")
@@ -61,7 +61,7 @@ $(document).ready(function() {
 		var pair_to_string = function( pair, prefix ) {
 			if ( typeof( prefix ) !== 'string' ) prefix = "L";
 
-			return prefix + " " + pair[0] + " " + pair[1] + " ";
+			return prefix + " " + pair.projected_longitude + " " + pair.projected_latitude + " ";
 		}
 
 		return pair_to_string( first, "M" )
@@ -69,66 +69,71 @@ $(document).ready(function() {
 		   ;
 	};
 
+	var dotGroup = svg.append("svg:g")
+		.attr("id", "dots");
+
 	d3.csv("Malawi_Digested.csv", function(projects) {
+		// Project the points for each project.
+		var projects = projects.map(function(project) {
+			var projected_point = projection( [project.longitude, project.latitude] );
+
+			project.projected_longitude = projected_point[0];
+			project.projected_latitude  = projected_point[1];
+
+			return project;
+		});
+
+		var show_category = function( category ) {
+			var filtered_projects = projects.filter(function(project) { return project.category == category; } );
+			console.log( "Filtered", filtered_projects );
+
+			// Add the dots.
+			var dots = dotGroup.selectAll("circle")
+				.data(filtered_projects);
+
+			dots.enter().append("svg:circle")
+				.attr("r",        function(data) { return data.precision * 5.; })
+				.attr("opacity",  function(data) { return 1.0 / data.precision; })
+				.attr("cx",       function(data) { return data.projected_longitude; })
+				.attr("cy",       function(data) { return data.projected_latitude; })
+				.attr("category", function(data) { return data.category; });
+
+			dots.exit().remove();
+
+			/* Compute the Voronoi diagram of the projected positions.
+			var polygons = d3.geom.voronoi( projects );
+
+			var voronoi = svg.append("svg:g")
+				.attr("id", "voronoi" )
+				.selectAll("path")
+				.data( polygons );
+
+			voronoi.enter().append("svg:path")
+				.attr("d", polygon_to_path_data );
+
+			voronoi.exit().remove();
+			*/
+		};
+
 		var lookup_category = make_lookup_key( 'category' );
 
 		var categories = sort_unique( projects.map( lookup_category ) );
 
 		// Add the checkbox list of categories.
 		var filterDivs = d3.select("#filters").selectAll("div")
-			.data( categories );
-	
-		filterDivs.enter()
-			.append("div")
-				.attr("class", "filter")
-			.insert("div", ".filter")
-				.text(identity)
-			.append("input")
-				.attr("type", "checkbox")
-				.attr("name", "category")
-				.attr("value", lookup_category)
-				.attr("value", identity)
-				.attr("checked", true)
-				.on("click", function(data) {
-					console.log( data, this.checked );
-				})
-		;
-
-		filterDivs.exit().remove();
-
-		// Compute the points for each project.
-		var points = projects.map(function(project) {
-			var point = [project['longitude'], project['latitude']];
-			var projected_point = projection( point );
-			projected_point['category'] = project['category'];
-			projected_point['precision'] = project['precision'];
-			return projected_point;
-		});
-
-		// Add the dots.
-		var dots = svg.append("svg:g")
-			.attr("id", "dots")
-			.selectAll("circle")
-			.data(points);
-
-		dots.enter().append("svg:circle")
-			.attr("r", function(data) { return data['precision'] * 5.; })
-			.attr("opacity", function(data) { return 1.0 / data['precision']; })
-			.attr("cx", function(data) { return data[0]; } )
-			.attr("cy", function(data) { return data[1]; } )
-			.attr("category", lookup_category);
-
-		dots.exit().remove();
-
-		// Compute the Voronoi diagram of the projected positions.
-		var polygons = d3.geom.voronoi( points );
-
-		var voronoi = svg.append("svg:g")
-			.attr("id", "voronoi" )
-			.selectAll("path")
-			.data( polygons );
-
-		voronoi.enter().append("svg:path")
-			.attr("d", polygon_to_path_data );
+			.data( categories )
+			.enter()
+				.append("div")
+					.attr("class", "filter")
+				.insert("div", ".filter")
+					.text(identity)
+				.append("input")
+					.attr("type", "radio")
+					.attr("name", "category")
+					.attr("value", lookup_category)
+					.attr("value", identity)
+					.on("click", function(data) {
+						show_category( this.value );
+					});
 	});
 });
