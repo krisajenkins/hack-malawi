@@ -26,13 +26,12 @@ function identity(arg) {
 $(document).ready(function() {
 	var projection = d3.geo.azimuthal()
 		.mode("equidistant")
-		.origin([30, -15])
-		.scale(4000)
-		.translate([300, 400]);
+		.origin([37, -12.5])
+		.scale(4000);
 
 	var svg = d3.select("body")
-		.insert("svg:svg", "h2")
-		.attr("width", 1000)
+		.append("svg:svg")
+		.attr("width", 600)
 		.attr("height", 600);
 
 	var mapGroup = svg.append("svg:g")
