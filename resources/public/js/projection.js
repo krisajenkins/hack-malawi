@@ -13,9 +13,9 @@ function sort_unique(arr) {
 	return uniq;
 }
 
-function make_lookup_key( key ) {
-	return function( data ) {
-		return data[key];
+function make_lookup_function( key ) {
+	return function( object ) {
+		return object[key];
 	}
 }
 
@@ -26,12 +26,12 @@ function identity(arg) {
 $(document).ready(function() {
 	var projection = d3.geo.azimuthal()
 		.mode("equidistant")
-		.origin([37, -12.5])
+		.origin([38.2, -12.5])
 		.scale(4000);
 
 	var svg = d3.select("#data")
 		.insert("svg:svg","#filters")
-		.attr("width", 600)
+		.attr("width", 400)
 		.attr("height", 600);
 
 	var mapGroup = svg.append("svg:g")
@@ -67,21 +67,25 @@ $(document).ready(function() {
 			return project;
 		});
 
-		var show_category = function( category ) {
-			var filtered_projects = projects.filter(function(project) { return project.category == category; } );
+		var group_key = 'donor';
+		var lookup_group = make_lookup_function( group_key );
+		var groups = sort_unique( projects.map( lookup_group ) );
+
+		var show_group = function( lookup_function, lookup_value ) {
+			var filtered_projects = projects.filter(function(project) { return lookup_function(project) == lookup_value; } );
 
 			// Add the dots.
 			var dots = dotGroup.selectAll("circle")
 				.data(filtered_projects, function(data) { return data.id; });
 
 			dots.enter().append("svg:circle")
-				.attr("category", function(data) { return data.category; })
+				.attr("group", lookup_function)
 				.attr("opacity",  0.0 )
 				.attr("r",        0.0 )
 				.attr("cx",       -1000 )
 				.attr("cy",       function(data) { return data.projected_latitude; })
 				.transition()
-					.duration( 750 )
+					.duration( 250 )
 					.attr("opacity",  function(data) { return 1.0 / data.precision; })
 					.attr("cx",       function(data) { return data.projected_longitude; })
 					.attr("r",        function(data) { return data.precision * 5.; })
@@ -89,7 +93,7 @@ $(document).ready(function() {
 
 			dots.exit()
 				.transition()
-					.duration( 750 )
+					.duration( 250 )
 					.attr("opacity", 0.0 )
 					.attr("cx", 1000.0 )
 					.attr("r", 0.0 )
@@ -104,21 +108,20 @@ $(document).ready(function() {
 			});
 		};
 
-		var lookup_category = make_lookup_key( 'category' );
-
-		var categories = sort_unique( projects.map( lookup_category ) );
-
-		// Add the checkbox list of categories.
+		// Add the checkbox list of groups.
 		var filterDivs = d3.select("#filters").selectAll("div")
-			.data( categories )
+			.data( groups )
 			.enter()
 				.append("div")
 					.attr("class", "filter")
 					.text(identity)
 					.on("click", function(data) {
-						show_category( data );
+						show_group( lookup_group, data );
 						$(".filter").removeClass("selected");
 						$(this).addClass("selected");
 					});
+
+		// For convenience, click one to kick us off.
+		$(".filter")[2].click();
 	});
 });
