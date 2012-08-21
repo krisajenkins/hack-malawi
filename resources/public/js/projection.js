@@ -101,6 +101,7 @@ $(document).ready(function() {
 			var point = [project['longitude'], project['latitude']];
 			var projected_point = projection( point );
 			projected_point['category'] = project['category'];
+			projected_point['precision'] = project['precision'];
 			return projected_point;
 		});
 
@@ -111,7 +112,8 @@ $(document).ready(function() {
 			.data(points);
 
 		dots.enter().append("svg:circle")
-			.attr("r", 5.0 )
+			.attr("r", function(data) { return data['precision'] * 5.; })
+			.attr("opacity", function(data) { return 1.0 / data['precision']; })
 			.attr("cx", function(data) { return data[0]; } )
 			.attr("cy", function(data) { return data[1]; } )
 			.attr("category", lookup_category);
