@@ -29,8 +29,8 @@ $(document).ready(function() {
 		.origin([37, -12.5])
 		.scale(4000);
 
-	var svg = d3.select("body")
-		.append("svg:svg")
+	var svg = d3.select("#data")
+		.insert("svg:svg","#filters")
 		.attr("width", 600)
 		.attr("height", 600);
 
@@ -94,6 +94,14 @@ $(document).ready(function() {
 					.attr("cx", 1000.0 )
 					.attr("r", 0.0 )
 					.remove();
+
+			dots.on("mouseover", function(data) {
+				var details = d3.select("#details").selectAll("div")
+					.data([data], function(data) { return data.id });
+				details.enter().append("div")
+					.text(function(data) { return data.funding; });
+				details.exit().remove();
+			});
 		};
 
 		var lookup_category = make_lookup_key( 'category' );

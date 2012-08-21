@@ -1,33 +1,64 @@
-@blue: #414fcc;
+@blue: #5fb1d0;
+@light_blue: lighten( @blue, 20% );
 @dark_blue: darken( @blue, 20% );
+@grey: #d0d0d0;
+@dark_grey: darken( @grey, 40% );
+@light_grey: lighten( @grey, 10% );
+@off_black: #092029;
 
-#map path {
-	fill: #ccc;
-	stroke: #fff;
+.shadow {
+	-webkit-box-shadow: 3px 3px 5px @grey;
 }
 
-#voronoi path {
-	fill: none;
-	pointer-events: all;
-	stroke: @dark_blue;
-	stroke-width: 2;
+.gradient( @from: @black, @to: @white ) {
+	background-color: @from;
+
+	background-image: -webkit-linear-gradient( bottom, @from 0%, @to 100% );
+	background-image: -moz-linear-gradient( bottom, @from 0%, @to 100% );
+	background-image: -o-linear-gradient( bottom, @from 0%, @to 100% );
+	background-image: -ms-linear-gradient( bottom, @from 0%, @to 100% );
+}
+
+body {
+	font-family: Helvetica;
+	color: @off_black;
+	background-color: @light_grey;
+}
+
+#map path {
+	fill: @grey;
+	stroke: @dark_grey;
+	stroke-width: 1px;
 }
 
 circle {
-	fill: @blue
+	fill: @dark_blue;
+}
+
+rect {
+	fill: red;
 }
 
 #filters {
 	float: left;
-	margin: 2em;
+	margin: 0 1em 0 1em;
+
 	.filter {
-		padding: 5px;
-		margin: 5px;
-		border: solid 2px black;
+		font-family: Tahoma;
+		padding: 0.25em 1em;
+		margin: 0 0.5em 0.5em 0.5em;
+		border: solid 1px @dark_grey;
+		position: relative;
+		background-color: white;
+		.shadow;
 
 		&.selected {
-			background-color: @blue;
-			color: white;
+			background-color: @light_blue;
+			.gradient( @blue, @light_blue );
+			left: -1em;
+			-webkit-transition-property: top, left;
+			-webkit-transition-duration: 0.05s;
+			-webkit-transition-timing-function: linear;
 		}
 	}
 }
@@ -35,19 +66,23 @@ circle {
 h2 {
 	margin: 1em auto;
 	text-align: center;
+	font-size: 40px;
 }
 
 #details {
 	position: absolute;
 	top: 10em;
-	right: 1em;
+	right: 1.5em;
+}
 
-	table {
-		padding: 0.5em 1em;
-		border: solid grey 2px;
-	}
+#data {
+	margin: 0px auto;
+	width: 80%;
 }
 
 svg {
-	border: solid grey 2px;
+	float: left;
+	border: solid @dark_grey 1px;
+	background-color: white;
+	.shadow;
 }
