@@ -1,26 +1,26 @@
 Array.prototype.sort_unique = function() {
 	var sorted = this.sort();
 	var unique;
+	var i;
 
 	unique = [sorted[0]];
-	for (var i = 1; i < sorted.length; i++) { // start loop at 1 as element 0 can never be a duplicate
+	for (i = 1; i < sorted.length; i++) { // start loop at 1 as element 0 can never be a duplicate
 		if (sorted[i-1] !== sorted[i]) {
 			unique.push(sorted[i]);
 		}
 	}
 
 	return unique;
-}
-
-function make_lookup_function( key ) {
-	return function( object ) {
-		return object[key];
-	}
-}
+};
 
 function identity(arg) {
 	return arg;
 }
+
+var projection = d3.geo.azimuthal()
+	.mode("equidistant")
+	.origin([38.2, -12.5])
+	.scale(4000);
 
 function project_object(object) {
 	var projected_point = projection( [object.longitude, object.latitude] );
@@ -29,12 +29,7 @@ function project_object(object) {
 	object.projected_latitude  = projected_point[1];
 
 	return object;
-};
-
-var projection = d3.geo.azimuthal()
-	.mode("equidistant")
-	.origin([38.2, -12.5])
-	.scale(4000);
+}
 
 var data_to_path = d3.geo.path()
 	.projection(projection);
@@ -62,9 +57,9 @@ $(document).ready(function() {
 		mapPaths.exit().remove();
 	});
 
-	d3.csv("Malawi_Digested.csv", function(projects) {
+	d3.csv("Malawi_Digested.csv", function(response) {
 		// Project the points for each project.
-		var projects = projects.map(project_object);
+		var projects = response.map(project_object);
 
 		function generate_filters(filter_key) {
 			var group_names = projects.map(function(object) { return object[filter_key]; }).sort_unique();
@@ -85,10 +80,10 @@ $(document).ready(function() {
 				$(this).addClass("selected");
 
 				// Replot the relevant projects.
-				var filtered_projects = projects.filter(function(object) { return object[filter_key] == group_name; } );
+				var filtered_projects = projects.filter(function(object) { return object[filter_key] === group_name; } );
 				plot_projects(filtered_projects);
 			});
-		};
+		}
 
 		generate_filters('amp_sector');
 
@@ -106,7 +101,7 @@ $(document).ready(function() {
 					.duration( 250 )
 					.attr("opacity",  function(project) { return 1.0 / project.precision; })
 					.attr("cx",       function(project) { return project.projected_longitude; })
-					.attr("r",        function(project) { return project.precision * 5.; })
+					.attr("r",        function(project) { return project.precision * 5.0; });
 
 			dots.exit()
 				.transition()
