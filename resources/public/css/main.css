@@ -5,7 +5,8 @@ body{font-family:Helvetica;color:#092029;background-color:#e5f4fa;background-ima
 circle{fill:#38addb;stroke:#257291;}
 rect{fill:red;}
 #filters{float:left;margin:0 1em 0 1em;}#filters .filter{font-family:Tahoma;padding:0.25em 1em;margin:0 0.5em 0.5em 0.5em;border:solid 1px #6a6a6a;position:relative;background-color:#eaeaea;-webkit-box-shadow:3px 3px 5px #d0d0d0;-webkit-transition-property:left,border-left-color,margin-left,background-color;-webkit-transition-duration:0.25s;-webkit-transition-timing-function:linear;}#filters .filter.selected{background-color:white;left:-1.5em;margin-left:6px;border-left-color:white;}
-h2{margin:1em auto;text-align:center;font-size:40px;}
+#heading{margin:1em auto;text-align:center;}#heading h2{font-size:40px;margin-bottom:.25em;}
+#heading #instructions{font-style:italic;}#heading #instructions p{margin:0.25em;font-size:14px;}
 #detail{position:absolute;width:300px;left:-280px;top:20px;border-collapse:collapse;background-color:#eaeaea;border:solid 5px #257291;display:none;}#detail th{text-align:left;vertical-align:top;}
 #detail th,#detail td{border:solid 1px #6a6a6a;padding:5px;}
 #data{position:relative;left:400px;}
