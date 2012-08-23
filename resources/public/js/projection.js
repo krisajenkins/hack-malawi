@@ -110,7 +110,7 @@ $(document).ready(function() {
 			$("#detail").fadeOut();
 		}
 
-		generate_filters('donor');
+		generate_filters('amp_sector');
 
 		var plot_projects = function(projects_to_plot) {
 			// Add the circles.
