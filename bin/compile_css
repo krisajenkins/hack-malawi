@@ -1,0 +1,11 @@
+#!/bin/sh
+
+DIRNAME=`dirname $0`
+cd $DIRNAME/..
+
+LESSC=~/Work/ThirdParty/less.js/bin/lessc
+
+for FILE in resources/public/css/main
+do
+	$LESSC -x --include-path=resources/public/css ${FILE}.less > ${FILE}.css
+done
