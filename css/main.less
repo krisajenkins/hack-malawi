@@ -1,0 +1,78 @@
+@import "util";
+@import "palette";
+@import "general";
+
+#map path {
+	fill: @grey;
+	stroke: @dark_grey;
+	stroke-width: 1px;
+}
+
+circle {
+	fill: @blue;
+	stroke: @red;
+}
+
+#filters {
+	float: left;
+	margin: 0 1em 0 1em;
+
+	.filter {
+		font-family: Tahoma;
+		padding: 0.25em 1em;
+		margin: 0 0.5em 0.5em 0.5em;
+		border: solid 1px @dark_grey;
+		position: relative;
+		background-color: @light_grey;
+		.shadow;
+
+		-webkit-transition-property: left, border-left-color, margin-left, background-color;
+		-webkit-transition-duration: 0.25s;
+		-webkit-transition-timing-function: linear;
+
+		&.selected {
+			background-color: white;
+			left: -1.5em;
+			margin-left: 6px;
+			border-left-color: white;
+		}
+	}
+}
+
+#detail {
+	position: absolute;
+	width: 300px;
+	left: -280px;
+	top: 20px;
+
+
+	border-collapse: collapse;
+	background-color: @light_grey;
+	border: solid 5px @red;
+
+	display: none;
+
+	th {
+		text-align: left;
+		vertical-align: top;
+	}
+
+	th, td {
+		border: solid 1px @dark_grey;
+		padding: 5px;
+	}
+}
+
+#data {
+	position: relative;
+	left: 400px;
+}
+
+svg {
+	float: left;
+	border: solid @dark_grey 1px;
+	background-color: white;
+	.shadow;
+}
+
+

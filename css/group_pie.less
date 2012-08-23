@@ -1,0 +1,38 @@
+@import "util";
+@import "palette";
+@import "general";
+
+svg {
+	float: left;
+}
+
+#list {
+	width: 30%;
+	float: left;
+	position: relative;
+	left: 50px;
+}
+
+.listItem {
+	background-color: white;
+	width: 28em;
+	position: absolute;
+	margin: 0.5em;
+	border: solid 1px grey;
+	height: 20px;
+	.gradient( @grey, white );
+	padding: 5px;
+}
+
+.listItemBox {
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: 0px;
+	left: -35px;
+}
+
+h3 {
+	font-size: 40px;
+	margin: 20px 0;
+}
