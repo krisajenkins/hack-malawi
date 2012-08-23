@@ -6,6 +6,7 @@
 @dark_grey: darken( @grey, 40% );
 @light_grey: lighten( @grey, 10% );
 @off_black: #092029;
+@red: #257291;
 
 .shadow {
 	-webkit-box-shadow: 3px 3px 5px @grey;
@@ -40,6 +41,7 @@ body {
 
 circle {
 	fill: @blue;
+	stroke: @red;
 }
 
 rect {
@@ -78,15 +80,33 @@ h2 {
 	font-size: 40px;
 }
 
-#details {
+#detail {
 	position: absolute;
-	top: 10em;
-	right: 1.5em;
+	width: 300px;
+	left: -280px;
+	top: 20px;
+
+
+	border-collapse: collapse;
+	background-color: @light_grey;
+	border: solid 5px @red;
+
+	display: none;
+
+	th {
+		text-align: left;
+		vertical-align: top;
+	}
+
+	th, td {
+		border: solid 1px @dark_grey;
+		padding: 5px;
+	}
 }
 
 #data {
-	margin: 0px auto;
-	width: 70%;
+	position: relative;
+	left: 400px;
 }
 
 svg {
@@ -95,3 +115,5 @@ svg {
 	background-color: white;
 	.shadow;
 }
+
+
