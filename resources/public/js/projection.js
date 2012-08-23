@@ -67,7 +67,7 @@ $(document).ready(function() {
 	var circleGroup = svg.append("svg:g")
 		.attr("id", "circles");
 
-	d3.json("/json/malawi.geojson", function(collection) {
+	d3.json("json/malawi.geojson", function(collection) {
 		var mapPaths = mapGroup.selectAll("path")
 			.data([collection]);
 
