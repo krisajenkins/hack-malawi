@@ -5,7 +5,7 @@ cd $DIRNAME/..
 
 LESSC=~/Work/ThirdParty/less.js/bin/lessc
 
-for FILE in resources/public/css/main
+for FILE in resources/public/css/main resources/public/css/group_pie
 do
 	$LESSC -x --include-path=resources/public/css ${FILE}.less > ${FILE}.css
 done

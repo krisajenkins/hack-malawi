@@ -46,7 +46,7 @@ $(document).ready(function() {
 		listItems.enter()
 				.append("div")
 				.attr("class", "listItem")
-				.style("top", function(d,i) { return ( 25 * i ) + "px"; })
+				.style("top", function(d,i) { return ( 40 * i ) + "px"; })
 				;
 		listItems.exit().remove();
 
@@ -59,6 +59,10 @@ $(document).ready(function() {
 
 		var pie = pieGroup.selectAll("path")
 			.data(pieLayout(response));
+
+		var pieTitle = d3.select("h3#title");
+
+		pieTitle.text( ( key == 'pledged' ) ? "Funds Committed" : "Funds Dispersed" );
 
 		var arcs = pie.enter().append("svg:path")
 			.attr("fill", function(d,i) { return colourScheme(i); })
@@ -86,7 +90,9 @@ $(document).ready(function() {
 			)
 			.transition()
 				.delay(function(d, i) { return i * 100; })
-				.style("top", function(d,i) { return ( 25 * i ) + "px"; })
+				.style("top", function(d,i) { return ( 40 * i ) + "px"; })
+
+			pieTitle.text( ( key == 'pledged' ) ? "Funds Committed" : "Funds Dispersed" );
 		});
 	});
 });

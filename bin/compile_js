@@ -8,3 +8,10 @@ java -jar bin/compiler.jar \
 	--js resources/public/js/projection.js \
 	--js resources/public/js/ga.js \
 	--js_output_file resources/public/js/malawi.js
+
+java -jar bin/compiler.jar \
+	--warning_level QUIET \
+	--js resources/public/js/d3.v2.js \
+	--js resources/public/js/group_pie.js \
+	--js resources/public/js/ga.js \
+	--js_output_file resources/public/js/group.js
