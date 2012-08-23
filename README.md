@@ -1,15 +1,8 @@
-# ddc
+# Malawi Aid Data Display
 
-I'm an app. Or maybe I'm a library? I haven't decided yet. 
+Stretching my legs, this is a fast hack of some Aid Data about Malawi, as warm-up for the [Development Data Challenge][ddc].
 
-The choice is up to you!
+Go to [the published version][main site] if you want to see it in action.
 
-## Usage
-
-FIXME
-
-## License
-
-Copyright © 2012 FIXME
-
-Distributed under the Eclipse Public License, the same as Clojure.
+[ddc]: http://developmentdatachallenge.org/
+[main site]: http://krisajenkins.github.com/hack-malawi/
