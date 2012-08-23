@@ -5,6 +5,6 @@ body{font-family:Helvetica;color:#092029;background-color:#e5f4fa;background-ima
 #heading #instructions{font-style:italic;}#heading #instructions p{margin:0.25em;font-size:14px;}
 svg{float:left;}
 #list{width:30%;float:left;position:relative;left:50px;}
-.listItem{background-color:white;width:28em;position:absolute;margin:0.5em;border:solid 1px grey;height:18px;background-color:#d0d0d0;background-image:-webkit-linear-gradient(bottom, #d0d0d0 0%, #ffffff 100%);background-image:-moz-linear-gradient(bottom, #d0d0d0 0%, #ffffff 100%);background-image:-o-linear-gradient(bottom, #d0d0d0 0%, #ffffff 100%);background-image:-ms-linear-gradient(bottom, #d0d0d0 0%, #ffffff 100%);padding:5px;}
+.listItem{background-color:white;width:28em;position:absolute;margin:0.5em;border:solid 1px grey;height:20px;background-color:#d0d0d0;background-image:-webkit-linear-gradient(bottom, #d0d0d0 0%, #ffffff 100%);background-image:-moz-linear-gradient(bottom, #d0d0d0 0%, #ffffff 100%);background-image:-o-linear-gradient(bottom, #d0d0d0 0%, #ffffff 100%);background-image:-ms-linear-gradient(bottom, #d0d0d0 0%, #ffffff 100%);padding:5px;}
 .listItemBox{width:30px;height:30px;position:absolute;top:0px;left:-35px;}
 h3{font-size:40px;margin:20px 0;}
