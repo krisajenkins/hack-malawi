@@ -1,37 +1,59 @@
-@import "util";
-@import "palette";
-@import "general";
+body {
+    color: #092029;
+    height: 800px;
+    font-family: 'Droid Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#heading {
+    margin: 0 auto 3em;
+    color: #777;
+    text-align: center;
+
+	h2 {
+		font-size: 52px;
+		margin-bottom: .25em;
+	}
+
+	#instructions {
+		font-style: italic;
+
+		p {
+			margin: 0.25em;
+			font-size: 14px;
+		}
+	}
+}
 
 #map path {
-	fill: @grey;
-	stroke: @dark_grey;
-	stroke-width: 1px;
+    fill: #d0d0d0;
+    stroke: #6a6a6a;
+    stroke-width: 1px;
 }
 
 circle {
-	fill: @blue;
-	stroke: @red;
+    fill: #38addb;
+    stroke: #257291;
 }
 
 #filters {
-	float: left;
-	margin: 0 1em 0 1em;
+    float: left;
+    margin: 0 1em 0 1em;
 
 	.filter {
-		font-family: Tahoma;
-		padding: 0.25em 1em;
+		padding: 0.39em 1em;
 		margin: 0 0.5em 0.5em 0.5em;
-		border: solid 1px @dark_grey;
 		position: relative;
-		background-color: @light_grey;
-		.shadow;
-
-		-webkit-transition-property: left, border-left-color, margin-left, background-color;
-		-webkit-transition-duration: 0.25s;
-		-webkit-transition-timing-function: linear;
+		font-weight: bold;
+		color: #555;
+		letter-spacing: 1px;
+		background-color: #EEF;
+		cursor: pointer;
+		border-radius: 5px;
 
 		&.selected {
-			background-color: white;
+			background-color: #9EF;
 			left: -1.5em;
 			margin-left: 6px;
 			border-left-color: white;
@@ -40,39 +62,34 @@ circle {
 }
 
 #detail {
-	position: absolute;
-	width: 300px;
-	left: -280px;
-	top: 20px;
-
-
-	border-collapse: collapse;
-	background-color: @light_grey;
-	border: solid 5px @red;
-
-	display: none;
+    position: absolute;
+    width: 360px;
+    left: -280px;
+    top: 20px;
+    border-collapse: collapse;
+    border: none;
+    display: none;
+    color: #777;
 
 	th {
 		text-align: left;
 		vertical-align: top;
+		color: #36F;
 	}
 
 	th, td {
-		border: solid 1px @dark_grey;
-		padding: 5px;
+		padding: 15px 5px 5px;
+		border-bottom: solid 1px #ccc;
+		margin-bottom: 5px;
 	}
 }
 
 #data {
-	position: relative;
-	left: 400px;
+    position: relative;
+    left: 400px;
 }
 
 svg {
-	float: left;
-	border: solid @dark_grey 1px;
-	background-color: white;
-	.shadow;
+    float: left;
+    background-color: white;
 }
-
-
