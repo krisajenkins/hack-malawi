@@ -1,40 +1,15 @@
-body {
-    color: #092029;
-    height: 800px;
-    font-family: 'Droid Sans', sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-#heading {
-    margin: 0 auto 3em;
-    color: #777;
-    text-align: center;
-
-	h2 {
-		font-size: 52px;
-		margin-bottom: .25em;
-	}
-
-	#instructions {
-		font-style: italic;
-
-		p {
-			margin: 0.25em;
-			font-size: 14px;
-		}
-	}
-}
+@import "general";
+@import "palette";
 
 #map path {
-    fill: #d0d0d0;
-    stroke: #6a6a6a;
+    fill: @grey;
+    stroke: @dark_grey;
     stroke-width: 1px;
 }
 
 circle {
-    fill: #38addb;
-    stroke: #257291;
+    fill: @sharp_blue;
+    stroke: @dark_blue;
 }
 
 #filters {
@@ -42,18 +17,11 @@ circle {
     margin: 0 1em 0 1em;
 
 	.filter {
-		padding: 0.39em 1em;
-		margin: 0 0.5em 0.5em 0.5em;
 		position: relative;
-		font-weight: bold;
-		color: #555;
-		letter-spacing: 1px;
-		background-color: #EEF;
-		cursor: pointer;
-		border-radius: 5px;
+		.category;
 
 		&.selected {
-			background-color: #9EF;
+			background-color: @cyan;
 			left: -1.5em;
 			margin-left: 6px;
 			border-left-color: white;
@@ -69,12 +37,12 @@ circle {
     border-collapse: collapse;
     border: none;
     display: none;
-    color: #777;
+    color: @dark_grey;
 
 	th {
 		text-align: left;
 		vertical-align: top;
-		color: #36F;
+		color: @deep_blue;
 	}
 
 	th, td {
@@ -87,9 +55,4 @@ circle {
 #data {
     position: relative;
     left: 400px;
-}
-
-svg {
-    float: left;
-    background-color: white;
 }

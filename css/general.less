@@ -1,16 +1,18 @@
 body {
-	font-family: Helvetica;
-	color: @off_black;
-	background-color: @lighter_blue;
-	.background_noise;
+    color: #092029;
+    height: 800px;
+    font-family: 'Droid Sans', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 #heading {
-	margin: 1em auto;
-	text-align: center;
+    margin: 0 auto 3em;
+    color: #777;
+    text-align: center;
 
 	h2 {
-		font-size: 40px;
+		font-size: 52px;
 		margin-bottom: .25em;
 	}
 
@@ -21,5 +23,28 @@ body {
 			margin: 0.25em;
 			font-size: 14px;
 		}
+	}
+}
+
+svg {
+    float: left;
+    background-color: white;
+}
+
+.category {
+	color: @dark_grey;
+	background-color: @light_blue;
+
+	padding: 0.39em 1em;
+	margin: 0 0.5em 0.5em 0.5em;
+	border-radius: 5px;
+
+	cursor: pointer;
+
+	letter-spacing: 1px;
+	font-weight: bold;
+
+	&.selected {
+		background-color: @cyan;
 	}
 }

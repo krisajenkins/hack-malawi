@@ -2,10 +2,6 @@
 @import "palette";
 @import "general";
 
-svg {
-	float: left;
-}
-
 #list {
 	width: 30%;
 	float: left;
@@ -14,22 +10,19 @@ svg {
 }
 
 .listItem {
-	background-color: white;
-	width: 28em;
+	width: 32em;
 	position: absolute;
-	margin: 0.5em;
 	border: solid 1px grey;
-	height: 20px;
-	.gradient( @grey, white );
-	padding: 5px;
+	.category;
 }
 
 .listItemBox {
-	width: 30px;
-	height: 30px;
+	width: 33px;
+	height: 33px;
 	position: absolute;
-	top: 0px;
-	left: -35px;
+	top: -1px;
+	left: -40px;
+	border-radius: 5px;
 }
 
 h3 {
